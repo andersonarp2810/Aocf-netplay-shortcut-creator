@@ -2,12 +2,14 @@
 mode con: cols=160 lines=20
 title Squiroll + Netplay creator
 :main
+echo Welcome to AoCF Netplay Picker. Readme at https://github.com/andersonarp2810/Aocf-netplay-shortcut-creator
 goto thcrapinput
 
 :thcrapinput
 echo Insert thcrap\bin folder location, obrigatory (example:'C:\thcrap\bin'):
 set /p thcrapbin=
-:: if "%thcrapbin%" equ "" set thcrapbin=C:\th\thcrap\bin this is a handy line for testing
+:: this is a handy line for testing
+:: if "%thcrapbin%" equ "" set thcrapbin=C:\th\thcrap\bin
 :: this took me ages to find, it removes quotes from the input, makes life easier when dealing with spaces on the file path
 :: so much so i'm gonna leave this comment here and no one can tell me otherwise
 if "%thcrapbin%" equ "" (echo thcrap bin folder location is obrigatory! & goto thcrapinput)
@@ -43,11 +45,21 @@ goto lunar_input
 :lunar_input
 echo Insert Lunarcast Netplay.dll location, leave it empty to not create a shortcut (example:'C:\Downloads\Netplay\Netplay.dll'):
 set /p lunarcast=
-if "%lunarcast%" equ "" goto create
+if "%lunarcast%" equ "" goto language_input
 set lunarcast=%lunarcast:"=%
 set extension=%lunarcast:~-4%
 if "%extension%" neq ".dll" (set lunarcast=%lunarcast%\Netplay.dll)
 echo Autocompleted file location to %lunarcast%
+goto language_input
+
+:language_input
+echo Insert thcrap patch file name, leave it empty for english patch. The files can be found in {thcrap\config}, for example, 'en.js' or 'en':
+set /p patch=
+if "%patch%" equ "" (set patch=en.js & goto create)
+set patch=%patch:"=%
+set extension=%patch:~-3%
+if "%extension%" neq ".js" (set patch=%patch%.js)
+echo Autocompleted patch file name to %patch%
 goto create
 
 :create
@@ -68,7 +80,7 @@ if "%stable%" neq "" (
     echo :main>>%newfile%
     echo xcopy /s/y "%stable%" "%thcrapbin%">>%newfile%
     echo del "%thcrapbin%\Netplay.dll">>%newfile%
-    echo start "" "%thcrapbin%thcrap_loader.exe" "en.js" th155>>%newfile%
+    echo start "" "%thcrapbin%thcrap_loader.exe" "%patch%" th155>>%newfile%
 )
 set newfile="%CD%\squiroll-beta.bat"
 if "%beta%" neq "" (
@@ -78,7 +90,7 @@ if "%beta%" neq "" (
     echo :main>>%newfile%
     echo xcopy /s/y "%beta%" "%thcrapbin%">>%newfile%
     echo del "%thcrapbin%\Netplay.dll">>%newfile%
-    echo start "" "%thcrapbin%thcrap_loader.exe" "en.js" th155>>%newfile%
+    echo start "" "%thcrapbin%thcrap_loader.exe" "%patch%" th155>>%newfile%
 )
 set newfile="%CD%\lunarcast-netplay.bat"
 if "%lunarcast%" neq "" (
@@ -88,7 +100,7 @@ if "%lunarcast%" neq "" (
     echo :main>>%newfile%
     echo xcopy /s/y "%lunarcast%" "%thcrapbin%">>%newfile%
     echo del "%thcrapbin%\Netcode.dll">>%newfile%
-    echo start "" "%thcrapbin%thcrap_loader.exe" "en.js" th155>>%newfile%
+    echo start "" "%thcrapbin%thcrap_loader.exe" "%patch%" th155>>%newfile%
 )
 
 echo Shortcuts created, have fun! Remember, if you move or rename any of the dlls, run this script again.
