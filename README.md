@@ -8,3 +8,6 @@ After creating each shortcut, you can rename and move the .bat files to anywhere
 Download the DLLs from:
 https://github.com/Dazegambler/squiroll
 http://www.lunarcast.net/aocf.php
+
+THCRAP is necessary for the shortcuts to work:
+https://www.thpatch.net/wiki/Special:MyLanguage/Project:Main_page
